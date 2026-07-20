@@ -1,0 +1,46 @@
+generated: '2026-07-18'
+method: searched
+source: >-
+  https://docs.chatfuel.com/en/articles/790461-broadcasting-api and
+  https://docs.chatfuel.com/en/articles/2706667-dashboard-api — Chatfuel publishes
+  no OpenAPI, so this auth profile is captured directly from the developer docs.
+provider: Chatfuel
+providerId: catnip
+summary:
+  types:
+  - apiKey
+  - http
+  api_key_in:
+  - query
+  http_schemes:
+  - bearer
+schemes:
+- name: BroadcastingToken
+  type: apiKey
+  in: query
+  parameter: chatfuel_token
+  description: >-
+    A unique token issued per bot, passed as the chatfuel_token query parameter on
+    every Broadcasting API request. Scopes the call to a single bot.
+  applies_to:
+  - Chatfuel Broadcasting API
+  base_url: https://api.chatfuel.com
+  docs: https://docs.chatfuel.com/en/articles/790461-broadcasting-api
+- name: DashboardApiToken
+  type: http
+  scheme: bearer
+  description: >-
+    A Dashboard API Token generated from the account profile (profile photo →
+    Dashboard API Token → generate). Sent as an Authorization Bearer header on every
+    Dashboard API request. The Dashboard API is documented as primarily for internal
+    use and subject to change.
+  applies_to:
+  - Chatfuel Dashboard API
+  base_url: https://dashboard.chatfuel.com/api
+  header: 'Authorization: Bearer {token}'
+  docs: https://docs.chatfuel.com/en/articles/2706667-dashboard-api
+notes: >-
+  The JSON API plugin (https://docs.chatfuel.com/en/articles/735122-json-api) is an
+  outbound integration — the bot calls the developer's own backend — so its auth is
+  defined by the external endpoint, not by Chatfuel. No OAuth2/OIDC surface is
+  published.
