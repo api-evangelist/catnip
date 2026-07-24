@@ -1,0 +1,31 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+generated: '2026-07-18'
+method: searched
+source: https://docs.chatfuel.com/en/articles/790461-broadcasting-api
+provider: Chatfuel
+providerId: catnip
+created: '2026-07-18'
+modified: '2026-07-18'
+tags:
+- Rate Limiting
+- Messaging
+description: >-
+  Chatfuel publishes a rate limit for the Broadcasting API of 25 requests per
+  second per bot. The JSON API plugin enforces a maximum response timeout of 10
+  seconds. No numeric limits are published for the Dashboard API.
+limits:
+- name: Broadcasting API requests
+  api: Chatfuel Broadcasting API
+  scope: bot
+  metric: requests_per_second
+  limit: 25
+  timeFrame: second
+  source: https://docs.chatfuel.com/en/articles/790461-broadcasting-api
+constraints:
+- name: JSON API plugin response timeout
+  api: Chatfuel JSON API plugin
+  metric: seconds
+  limit: 10
+  note: The maximum timeout for a JSON API plugin backend response is always 10 seconds.
+  source: https://docs.chatfuel.com/en/articles/735122-json-api

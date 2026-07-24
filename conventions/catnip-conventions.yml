@@ -1,0 +1,48 @@
+generated: '2026-07-18'
+method: searched
+source: >-
+  https://docs.chatfuel.com/en/collections/168839-api — cross-cutting request and
+  response conventions captured from the Broadcasting, Dashboard, and JSON API
+  plugin documentation. Chatfuel publishes no OpenAPI.
+provider: Chatfuel
+providerId: catnip
+description: >-
+  How the Chatfuel developer surfaces behave across operations: authentication
+  style per API, response envelope, messaging conventions, and rate-limit
+  signaling. Chatfuel does not document an idempotency-key mechanism, cursor
+  pagination, or field expansion.
+api_style: REST over HTTPS; query-parameter and JSON bodies; JSON responses.
+authentication:
+  broadcasting: apiKey via chatfuel_token query parameter (per-bot token)
+  dashboard: HTTP Bearer Authorization header (Dashboard API Token)
+  detail: authentication/catnip-authentication.yml
+response_envelope:
+  api: Chatfuel Dashboard API
+  shape: '{"success": true, "result": {...}}'
+  detail: >-
+    Successful Dashboard API responses wrap payloads in a success boolean and a
+    result object (e.g. bot ids or invite tokens).
+messaging_conventions:
+  send_target: One of chatfuel_flow_name, chatfuel_block_name, or chatfuel_block_id is required.
+  message_tag: >-
+    chatfuel_message_tag allows sending messages outside the platform 24-hour
+    messaging window.
+  user_attributes: Arbitrary user attributes may be passed as key-value pairs; tags as a comma-separated list.
+  docs: https://docs.chatfuel.com/en/articles/790461-broadcasting-api
+json_api_plugin:
+  methods: [GET, POST, PUT, PATCH, DELETE]
+  input_modes: [URL fields, full JSON profile, custom JSON body, URL-encoded]
+  response: >-
+    Return a messages array; combine several message dictionaries in one answer, or
+    return an empty response to render nothing. Attribute mapping via JSONPath.
+  timeout_seconds: 10
+  docs: https://docs.chatfuel.com/en/articles/735122-json-api
+idempotency:
+  supported: false
+  note: Chatfuel documents no idempotency-key header or mechanism.
+pagination:
+  supported: false
+  note: No cursor/offset pagination convention is documented.
+rate_limiting:
+  broadcasting_rps_per_bot: 25
+  detail: rate-limits/catnip-rate-limits.yml

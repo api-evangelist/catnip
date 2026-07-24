@@ -1,0 +1,39 @@
+generated: '2026-07-18'
+method: searched
+source: https://registry.npmjs.org — npm registry search for "chatfuel"
+provider: Chatfuel
+providerId: catnip
+note: >-
+  Chatfuel publishes no first-party client SDK. The packages below are
+  community/third-party wrappers around the Broadcasting and Dashboard APIs; none
+  are official. No PyPI, RubyGems, Packagist, NuGet, crates.io, or Maven Central
+  first-party package was found (PyPI "chatfuel" returned 404, RubyGems empty).
+packages:
+- language: javascript
+  registry: npm
+  name: chatfuel-api
+  url: https://www.npmjs.com/package/chatfuel-api
+  install: npm install chatfuel-api
+  description: Library to simplify sending messages and broadcasts to a Chatfuel bot.
+  official: false
+- language: javascript
+  registry: npm
+  name: chatfuel-broadcast
+  url: https://www.npmjs.com/package/chatfuel-broadcast
+  install: npm install chatfuel-broadcast
+  description: Wrapper for the Chatfuel broadcast API.
+  official: false
+- language: javascript
+  registry: npm
+  name: chatfuel-node-api
+  url: https://www.npmjs.com/package/chatfuel-node-api
+  install: npm install chatfuel-node-api
+  description: Broadcast messages to chatbot users (unofficial).
+  official: false
+- language: javascript
+  registry: npm
+  name: chatfuel-jsonify
+  url: https://www.npmjs.com/package/chatfuel-jsonify
+  install: npm install chatfuel-jsonify
+  description: Helper to build the JSON format Chatfuel's JSON API plugin expects.
+  official: false

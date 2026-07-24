@@ -1,7 +1,27 @@
 aid: catnip
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/catnip.png
 name: Catnip
-description: Catnip is a company surfaced as a portfolio company of 500-global and added to the API Evangelist
-  network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Catnip Inc is the company behind Chatfuel, an AI-powered business messaging and
+  chatbot automation platform for Facebook Messenger, Instagram, and WhatsApp.
+  Chatfuel lets businesses build conversational flows, run broadcasts, qualify
+  leads, book appointments, and automate customer support with AI agents. For
+  developers Chatfuel exposes three public integration surfaces: a Broadcasting
+  API for programmatically sending messages and triggering flows to bot users, a
+  Dashboard API for managing bots and Facebook page bindings, and a JSON API
+  plugin that lets a bot call an external backend and render dynamic content.
 url: https://raw.githubusercontent.com/api-evangelist/catnip/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -11,10 +31,51 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-18'
 tags:
 - Company
-apis: []
+- Chatbots
+- Messaging
+- Conversational AI
+- Marketing Automation
+- Facebook Messenger
+- Instagram
+- WhatsApp
+- Customer Engagement
+apis:
+- name: Chatfuel Broadcasting API
+  description: >-
+    Programmatically send messages and trigger flows/blocks to a specific bot user
+    on Messenger, Instagram, or WhatsApp. POST to the send endpoint with the bot's
+    unique chatfuel_token and a flow name, block name, or block id; supports message
+    tags for messaging outside the 24-hour window and setting user attributes.
+    Rate limited to 25 requests per second per bot.
+  humanURL: https://docs.chatfuel.com/en/articles/790461-broadcasting-api
+  baseURL: https://api.chatfuel.com
+  tags:
+  - Messaging
+  - Broadcast
+  - Chatbots
+  properties:
+  - type: Authentication
+    url: authentication/catnip-authentication.yml
+  - type: RateLimits
+    url: rate-limits/catnip-rate-limits.yml
+- name: Chatfuel Dashboard API
+  description: >-
+    Manage Chatfuel bots and their Facebook page bindings. Create empty bots, clone
+    content between bots, generate role-scoped invite links (ADMIN, EDITOR, MARKETER,
+    OPERATOR, VIEWER), and bind/unbind bots to Facebook pages. Authenticated with a
+    Bearer Dashboard API Token generated from the account profile. Documented as
+    primarily for internal use and subject to change.
+  humanURL: https://docs.chatfuel.com/en/articles/2706667-dashboard-api
+  baseURL: https://dashboard.chatfuel.com/api
+  tags:
+  - Bot Management
+  - Administration
+  properties:
+  - type: Authentication
+    url: authentication/catnip-authentication.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -23,3 +84,34 @@ maintainers:
 common:
 - type: Website
   url: https://chatfuel.com
+- type: DeveloperPortal
+  url: https://docs.chatfuel.com
+- type: Documentation
+  url: https://docs.chatfuel.com/en/collections/168839-api
+- type: APIReference
+  url: https://docs.chatfuel.com/en/collections/168839-api
+- type: Pricing
+  url: https://chatfuel.com/pricing
+- type: SignUp
+  url: https://panel.chatfuel.com/sign-in
+- type: TermsOfService
+  url: https://chatfuel.com/files/TermsOfUse.pdf
+- type: PrivacyPolicy
+  url: https://chatfuel.com/privacy-policy.html
+- type: Compliance
+  url: https://chatfuel.com/gdpr
+- type: Authentication
+  url: authentication/catnip-authentication.yml
+- type: Conventions
+  url: conventions/catnip-conventions.yml
+- type: RateLimits
+  url: rate-limits/catnip-rate-limits.yml
+- type: Packages
+  url: packages/catnip-packages.yml
+- type: DomainSecurity
+  url: security/catnip-domain-security.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence
