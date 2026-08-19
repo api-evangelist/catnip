@@ -1,0 +1,66 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+generated: '2026-08-13'
+method: searched
+source: https://chatfuel.com/pricing
+provider: Chatfuel
+providerId: catnip
+created: '2026-08-13'
+modified: '2026-08-13'
+description: >-
+  Chatfuel prices the product, not the API. Two self-serve tiers are published — a
+  free "Chatfuel Light" plan and a paid "AI PRO" plan at $49/month — plus a
+  contact-sales path for volume. No plan line item mentions API access, API call
+  quotas or API overage, and no per-tier rate limit is published; the pricing page
+  says only "usage limits apply, see plan limits for details". The API tokens
+  (Contacts, Broadcasting, Dashboard) are issued from the account regardless of
+  tier, so API entitlement per plan is not stated anywhere public.
+plan_count: 2
+currency: USD
+api_metered: false
+api_quotas_published: false
+plans:
+- name: Chatfuel Light
+  price: 0
+  currency: USD
+  billing_period: month
+  free: true
+  credit_card_required: false
+  included:
+  - Instagram, Facebook and WhatsApp automations
+  - Shared inbox
+  - Automated replies
+  - Flow builder
+  - Contact management and segmentation
+  - Templates
+  quota: not-published
+  overage: not-published
+  limits_note: Quotas are not stated on the pricing page.
+- name: AI PRO
+  price: 49
+  currency: USD
+  billing_period: month
+  annual_discount: '29% when billed yearly'
+  trial: true
+  included:
+  - Everything in Chatfuel Light
+  - AI sales manager
+  - AI knowledge base
+  - AI-powered automations
+  - Broadcasts
+  - Re-engagement tools
+  - Lead qualification funnels
+  - Advanced contact tools
+  quota: not-published
+  overage: not-published
+  limits_note: >-
+    "Usage limits apply. See plan limits for details" — the specific numbers are not
+    on the pricing page.
+enterprise:
+  published_tier: false
+  path: contact sales for usage beyond plan limits
+notes: >-
+  Meta/WhatsApp conversation charges are billed by Meta and are outside Chatfuel's
+  published price list. Nothing on the pricing page ties a tier to the Broadcasting
+  API's 25 requests-per-second ceiling or to the Contacts API's 1,000-numbers-per-
+  request cap; see rate-limits/catnip-rate-limits.yml.

@@ -1,0 +1,46 @@
+generated: '2026-08-13'
+method: searched
+source: https://academy.chatfuel.com/changelog and its feed https://academy.chatfuel.com/changelog.rss
+provider: Chatfuel
+providerId: catnip
+url: https://academy.chatfuel.com/changelog
+feed: https://academy.chatfuel.com/changelog.rss
+feed_format: RSS 2.0
+markdown_index: https://academy.chatfuel.com/changelog/llms.txt
+description: >-
+  "Releases" — a dated product changelog for the Chatfuel agency product, published
+  on the Fern-built documentation host with an RSS feed and a markdown index. It is
+  a product changelog, not an API changelog: entries describe AI Co-Worker,
+  lead-handoff and agency-track capability, and none announce an API change,
+  breaking change or deprecation.
+scheme:
+  versioning: none
+  entries_are_versioned: false
+  dated: true
+current_version: null
+covers_api_changes: false
+entries:
+- title: Co-Worker takes on reporting, setup checks, and lookups
+  date: '2026-07-31'
+  url: https://academy.chatfuel.com/coworker-reporting-and-setup-checks
+  breaking: false
+  additions:
+  - AI Co-Worker can report new-contact counts for a named period
+  - Co-Worker handles setup checks and lookups previously done by clicking through settings
+- title: Smarter lead handoffs and instant lead alerts
+  date: '2026-07-24'
+  url: https://academy.chatfuel.com/lead-handoffs-and-alerts
+  breaking: false
+  additions:
+  - Improved lead handoff behaviour
+  - Instant lead alerts
+- title: The Agency Track is live
+  date: '2026-07-02'
+  url: https://academy.chatfuel.com/agency-track-launch
+  breaking: false
+  additions:
+  - Launch of the agency documentation and enablement track
+window:
+  note: >-
+    Recent window only — these are every entry the feed carried when probed on
+    2026-08-13. The live changelog remains the source of truth.

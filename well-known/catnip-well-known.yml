@@ -1,0 +1,112 @@
+generated: '2026-08-13'
+method: probed
+source: >-
+  Live GET of the /.well-known/ discovery surface on every Chatfuel host named in
+  apis.yml plus the two current documentation hosts (academy.chatfuel.com,
+  help.chatfuel.com) and the app host (panel.chatfuel.com).
+provider: Chatfuel
+providerId: catnip
+summary: >-
+  Chatfuel publishes no first-party /.well-known/ discovery document. Two paths
+  returned a 200 and NEITHER is a Chatfuel-authored surface: docs.chatfuel.com
+  serves Intercom's own security.txt (Canonical: app.intercom.com) because the
+  legacy help centre was hosted on Intercom, and academy.chatfuel.com serves an
+  RFC 9727 api-catalog whose linkset is EMPTY — a valid document that advertises
+  zero APIs. Two hosts (dashboard.chatfuel.com and panel.chatfuel.com) are
+  single-page-app catch-alls that answer 200 with the same HTML shell for every
+  /.well-known/* path; those 200s are recorded as misses, not documents.
+  No WellKnown or SecurityTxt pointer is emitted in apis.yml as a result.
+pointer_emitted: false
+pointer_reason: >-
+  No probed path returned a Chatfuel-authored document. The only real documents
+  found belong to Intercom (docs host) or carry an empty linkset (academy host).
+hosts:
+- host: https://api.chatfuel.com
+  note: Broadcasting API host. JSON 404 on every well-known path — honest absence.
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://chatfuel.com
+  note: Marketing site. Angular SPA returns a 404 status with an HTML body.
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://docs.chatfuel.com
+  note: >-
+    Retired Intercom help centre — every article now 404s, but the Intercom
+    platform still answers /.well-known/security.txt with ITS OWN policy.
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: catnip-docs-intercom-security.txt
+    document_owner: Intercom
+    canonical: https://app.intercom.com/.well-known/security.txt
+    counted_as_hit: false
+    note: >-
+      Contact bugcrowd.com/intercom and security@intercom.com; Canonical points at
+      app.intercom.com. This is the docs-platform vendor's vulnerability disclosure
+      policy, not Chatfuel's, so it earns Chatfuel no SecurityTxt/Security pointer.
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://academy.chatfuel.com
+  note: >-
+    Current documentation host (built with Fern). Serves a real llms.txt and a
+    real remote MCP server, but its api-catalog is empty.
+  documents:
+  - path: /.well-known/api-catalog
+    status: 200
+    file: catnip-academy-api-catalog.json
+    content_type: application/json
+    body: '{"linkset":[]}'
+    counted_as_hit: false
+    note: >-
+      Well-formed RFC 9727 api-catalog with an EMPTY linkset — it advertises zero
+      APIs, so it provides no discovery value and is not credited as a published
+      catalog.
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+- host: https://dashboard.chatfuel.com
+  spa_catch_all: true
+  note: >-
+    FALSE POSITIVE HOST. Every /.well-known/* path returns HTTP 200 with the same
+    application HTML shell. Recorded as misses.
+  documents:
+  - {path: /.well-known/security.txt, status: 200, body: html-shell, counted_as_hit: false}
+  - {path: /.well-known/openid-configuration, status: 200, body: html-shell, counted_as_hit: false}
+  - {path: /.well-known/oauth-authorization-server, status: 200, body: html-shell, counted_as_hit: false}
+  - {path: /.well-known/api-catalog, status: 200, body: html-shell, counted_as_hit: false}
+  - {path: /.well-known/ai-plugin.json, status: 200, body: html-shell, counted_as_hit: false}
+  - {path: /.well-known/agent-card.json, status: 200, body: html-shell, counted_as_hit: false}
+  - {path: /.well-known/agent.json, status: 200, body: html-shell, counted_as_hit: false}
+- host: https://panel.chatfuel.com
+  spa_catch_all: true
+  note: >-
+    FALSE POSITIVE HOST. Application SPA; /.well-known/*, /openapi.json,
+    /api/openapi.json and /api/docs all return 200 with the same HTML shell.
+  documents:
+  - {path: /.well-known/security.txt, status: 200, body: html-shell, counted_as_hit: false}
+  - {path: /.well-known/openid-configuration, status: 200, body: html-shell, counted_as_hit: false}
+  - {path: /.well-known/oauth-authorization-server, status: 200, body: html-shell, counted_as_hit: false}
+  - {path: /.well-known/api-catalog, status: 200, body: html-shell, counted_as_hit: false}
+  - {path: /.well-known/ai-plugin.json, status: 200, body: html-shell, counted_as_hit: false}
+  - {path: /.well-known/agent-card.json, status: 200, body: html-shell, counted_as_hit: false}
+  - {path: /.well-known/agent.json, status: 200, body: html-shell, counted_as_hit: false}

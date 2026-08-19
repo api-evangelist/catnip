@@ -1,0 +1,63 @@
+# Chatfuel for Agencies
+
+## Instructions for AI Agents
+
+- For clean Markdown of any page, append `.md` to the page URL
+- For section-specific indexes, append `/llms.txt` to any section URL
+- For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://academy.chatfuel.com/_mcp/server
+
+## Docs
+
+- [Chatfuel for Agencies](https://academy.chatfuel.com/home.md): Everything you need to run Meta ads and qualify leads for your clients
+- [Welcome to Chatfuel](https://academy.chatfuel.com/docs.md): Run Meta ads, qualify leads, and manage everything for your clients
+- [What is Chatfuel](https://academy.chatfuel.com/what-is-chatfuel.md): A quick overview of what Chatfuel does, how it works, and why agencies use it to turn ad clicks into qualified leads
+- [How the funnel works: ads → bot → qualification → lead](https://academy.chatfuel.com/how-the-funnel-works.md): The core flow every Chatfuel setup is built around
+- [WhatsApp Business API](https://academy.chatfuel.com/whatsapp-business-api.md): The official rails your clients' WhatsApp funnels run on — and how they compare to the Business App and gray tools
+- [The 24-hour rule](https://academy.chatfuel.com/24-hour-rule.md): Meta's messaging window — the constraint every WhatsApp funnel is designed around
+- [Agency → clients model: how client companies are structured](https://academy.chatfuel.com/agency-clients-model.md): One client, one company — the workspace structure that keeps ten clients from ever becoming one mess
+- [Interface tour: where things are located](https://academy.chatfuel.com/interface-tour.md): A five-minute map of the Chatfuel dashboard — and the AI Co-Worker that does the configuring for you
+- [Roles & access for the agency team](https://academy.chatfuel.com/roles-access-agency-team.md): Three roles, one rule: nobody gets more access than their job needs — especially the client's own staff
+- [Create a client company](https://academy.chatfuel.com/create-client-company.md): Two minutes of clicking that starts every client engagement — and the onboarding rhythm to build around it
+- [What to ask the client for](https://academy.chatfuel.com/getting-access-from-client.md): The access checklist that decides your launch date — collect it before the kickoff call, not after
+- [Partner access to the client's portfolio](https://academy.chatfuel.com/meta-partner-access.md): Two ways into a client's Meta Business Portfolio — and exactly which permissions to ask for
+- [When the client has nothing set up](https://academy.chatfuel.com/client-without-business-manager.md): No Business Portfolio, no Page, a personal Instagram at best — build their Meta foundation from scratch, in their name
+- [Scripts for asking clients](https://academy.chatfuel.com/client-access-scripts.md): Copy-paste messages that get you access without scaring the client — plus answers for "is this safe?"
+- [Troubleshooting access issues](https://academy.chatfuel.com/client-access-troubleshooting.md): The partner request vanished, the assets aren't visible, the real admin left the company — every access dead-end and its exit
+- [First connection](https://academy.chatfuel.com/whatsapp-first-connection.md): Connect the client's WhatsApp number to their company — the step that turns a signed contract into a live channel
+- [Phone number verification](https://academy.chatfuel.com/whatsapp-phone-number-verification.md): The number is verified in minutes — it's the client's Meta business verification that decides how far the ads can scale
+- [Connecting Instagram](https://academy.chatfuel.com/connecting-instagram.md): Get invited into the client's business once — then connect their Instagram yourself, in about two minutes
+- [Common Meta access errors](https://academy.chatfuel.com/common-meta-access-errors.md): The channel connection failed — find the exact error, apply the fix, know whose move it is
+- [Connecting TikTok](https://academy.chatfuel.com/connecting-tiktok.md): Connect the client's TikTok — but read the restrictions first, before you promise anything
+- [Connecting the Widget](https://academy.chatfuel.com/connecting-widget.md): Put an AI chat on the client's website — one settings screen, one code snippet, one conversation with their developer
+- [Bot modules & blocks — what it's built from](https://academy.chatfuel.com/bot-modules.md): The five parts of a qualification bot — and why you assemble them by talking, not by dragging blocks
+- [Uploading info about the client's business](https://academy.chatfuel.com/uploading-client-business-info.md): The bot is exactly as smart as the Knowledge Base you feed it — here's what to collect from the client and how to load it
+- [Lead qualification questions & logic](https://academy.chatfuel.com/lead-qualification-logic.md): The right questions, asked well, separate a sales-ready lead from a browser — here's how to pick them for any client
+- [Lead attribution: which ad or post gets credit — and which scenario the AI runs](https://academy.chatfuel.com/lead-attribution.md): One lead can arrive from an ad, a comment, a story, or a plain DM — here's how Chatfuel pins the conversation to its origin and picks the scenario to run
+- [Ad posts: a scenario for every ad you run](https://academy.chatfuel.com/ad-posts.md): Add an ad's ID once and two things happen — the bot starts answering leads from that exact ad, and the ad gets its own slot in automations for its own script
+- [ig.me links: a trackable DM link for every campaign](https://academy.chatfuel.com/ig-me-links.md): Build the link by hand in ten seconds — Chatfuel catches the ref, files the link in automations, and every lead it brings stays attributed to it
+- [Booking & calendar: let the bot fill the client's calendar](https://academy.chatfuel.com/booking-and-calendar.md): For service businesses the funnel ends at a booked slot, not a qualified lead — choose how far the AI goes, from collecting intent to running the calendar on its own
+- [CAPI setup](https://academy.chatfuel.com/capi-setup.md): Send conversion events back to Meta
+- [Integration with Google Sheets and CRM](https://academy.chatfuel.com/google-sheets-crm-integration.md): Route qualified leads into Google Sheets or a CRM
+- [After hours / 24-7 auto-replies](https://academy.chatfuel.com/after-hours.md): Ads run around the clock — decide whether the bot does too, or only covers the hours the client's team is offline
+- [Troubleshooting](https://academy.chatfuel.com/qual-bot-troubleshooting.md): The bot went quiet, the leads went missing, or the AI sounds like a form — symptom by symptom, here's the fix
+- [AI generation of creatives for offer/audience](https://academy.chatfuel.com/ai-creatives.md): Brief the AI Co-Worker in chat and get a scroll-stopping ad creative in minutes — built from the client's real offers, styled to their brand, ready for Ads Manager
+- [AI copy and hooks for the niche](https://academy.chatfuel.com/ai-copy-hooks.md): Only about 1% of people tap 'See more' — the first line of your ad is the whole ad. Here are the hook formulas that earn the click, niche by niche
+- [Moderation in Meta](https://academy.chatfuel.com/meta-moderation.md): A rejected ad costs you launch days; repeated rejections put the whole ad account at risk — here's how review works and how to pass it the first time
+- [Troubleshooting](https://academy.chatfuel.com/ads-troubleshooting.md): The ad is live but the funnel is quiet — symptom by symptom, here's where click-to-WhatsApp campaigns leak and how to plug them
+- [End-to-end analytics: ads → leads → qualification → sales](https://academy.chatfuel.com/end-to-end-analytics.md): One chain of numbers from ad spend to closed deals — where each metric lives, which one actually matters, and how to pull all of it by asking
+- [Any report by asking the AI Co-Worker](https://academy.chatfuel.com/coworker-analytics.md): No dashboards to learn, no exports to wrangle — a data analyst on staff for every client, answering in the same chat where you run everything else
+- [Funnel and drop-off report](https://academy.chatfuel.com/funnel-dropoff-report.md): Every funnel leaks — the report tells you at which joint, and whether the fix belongs to your media buyer, your bot, or the client's sales team
+- [Lead quality and cost per qualified lead](https://academy.chatfuel.com/lead-quality-report.md): The most expensive leads are the cheap ones that never buy — how to measure what your ads really deliver and judge every campaign by it
+- [Conversation analytics: FAQs, objections, lost deals](https://academy.chatfuel.com/conversation-analytics.md): Your leads are telling you exactly why they don't buy — in the transcripts nobody reads. The Co-Worker reads them
+- [Speed to lead: winning the first five minutes](https://academy.chatfuel.com/speed-to-lead.md): Respond within an hour and you're 7× more likely to qualify the lead; wait a day and the deal is someone else's — the metric agencies win on before any targeting genius
+- [Tuning ads with funnel data](https://academy.chatfuel.com/ad-tuning.md): Ads Manager tells you what's cheap; the funnel tells you what's worth it — the weekly kill / scale / refresh loop that compounds
+- [The client report that defends your retainer](https://academy.chatfuel.com/client-reporting.md): Clients don't fire agencies over results — they fire them over unexplained results. The report structure, cadence, and metrics that make renewals boring
+- [Subscription in Chatfuel](https://academy.chatfuel.com/subscription.md): Manage your Chatfuel subscription
+- [Growth Suite](https://academy.chatfuel.com/growth-suite.md)
+- [Choose your first client](https://academy.chatfuel.com/pick-your-first-client.md): Choose the client this playbook can help quickly and prove honestly.
+- [Draft the SAL proposal](https://academy.chatfuel.com/generate-your-first-proposal.md): Turn the selected System for Automated Leads playbook into a client-specific commercial case.
+- [Package and price the service](https://academy.chatfuel.com/price-your-first-package.md): Price the selected outcome as implementation plus ongoing operation.
+- [Build the baseline and send](https://academy.chatfuel.com/paid-social-funnel-audit.md): Attach observed timestamps and handoffs to the proposal before the meeting.
+- [Run the proposal meeting](https://academy.chatfuel.com/the-proposal-meeting.md): The proposal is sent. Make one scoped decision, then carry the selected playbook into setup.
+- [Releases](https://academy.chatfuel.com/changelog.md): What's new, improved, and fixed in Chatfuel
+- [Changelog (all entries)](https://academy.chatfuel.com/changelog/llms.txt)

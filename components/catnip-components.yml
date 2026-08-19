@@ -1,0 +1,45 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://academy.chatfuel.com/connecting-widget.md and the chat widget articles on
+  https://help.chatfuel.com (chat-widget: settings / features / modes / turn on-off).
+provider: Chatfuel
+providerId: catnip
+description: >-
+  Chatfuel ships one client-side embeddable surface: a website chat widget that
+  drops the same AI agent answering the customer's WhatsApp onto their own site.
+  It is installed as an HTML snippet before </body> or inside <head>. The snippet
+  is generated per account inside the product (Settings → Website) and is NOT
+  published in the documentation, so there is no public loader URL, no versioned CDN
+  bundle and no npm package to pin — a consumer cannot see what they are loading
+  until they are signed in.
+component_count: 1
+families:
+- name: Website chat widget
+  kind: embedded-chat
+  distribution: html-snippet
+  install: >-
+    Copy the installation code from Settings → Website in the client company and
+    paste it into the site HTML before </body> or inside <head>.
+  loader_url: null
+  package: null
+  version: null
+  versioned: false
+  configuration:
+    location: Settings → Website (in-product)
+    options:
+    - Company name shown in the chat header
+    - Accent colour
+    - Logo
+    - Allowed domains the widget may run on
+    - On/off toggle
+  constraints:
+  - The closed widget button always shows the default Chatfuel icon on every plan; the button cannot be white-labelled.
+  - No proactive greeting — the AI replies only after the visitor sends the first message.
+  docs:
+  - https://academy.chatfuel.com/connecting-widget
+  - https://help.chatfuel.com/set-up-chat-widget-for-website-1ca34b06ecf8805ab96fcbf9b53f809f
+notes: >-
+  Distinct from packages/catnip-packages.yml, which catalogues server-side client
+  libraries (all community-authored). No first-party web component, element library
+  or embedded dashboard is published beyond this widget.

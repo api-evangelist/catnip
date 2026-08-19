@@ -1,0 +1,91 @@
+generated: '2026-08-13'
+method: probed
+source: >-
+  Live unauthenticated requests against https://api.chatfuel.com,
+  https://dashboard.chatfuel.com/api and https://panel.chatfuel.com/api on
+  2026-08-13. Chatfuel publishes no OpenAPI and no error reference, so every entry
+  below is an error response actually observed on the wire, not a documented one.
+provider: Chatfuel
+providerId: catnip
+format: vendor-json
+rfc9457: false
+description: >-
+  Chatfuel runs two distinct error shapes. Application errors from the Broadcasting
+  and Dashboard APIs use a vendor envelope with a human-readable string carrying a
+  class prefix ("Bad Request:", "Bad Data:"). Gateway-level errors on the same host
+  use a different, terser {code, message} shape. The Contacts API on
+  panel.chatfuel.com returns bare status codes with an empty body and a
+  chatfuel-trace-id header instead of an envelope. None of the three uses
+  application/problem+json.
+envelopes:
+- name: application-envelope
+  media_type: application/json
+  applies_to: [Chatfuel Broadcasting API, Chatfuel Dashboard API]
+  shape: '{"result": "<class>: <message>", "success": false, "errors": ["<class>: <message>"], "message": null}'
+  fields:
+    result: Human-readable message, prefixed with an error class
+    success: Always false on error
+    errors: Array of human-readable messages
+    message: Observed null on every error probed
+  error_classes_observed: ['Bad Request', 'Bad Data']
+- name: gateway-envelope
+  media_type: application/json
+  applies_to: [Chatfuel Broadcasting API]
+  shape: '{"code": <int>, "message": "HTTP <int> <reason>"}'
+  note: Emitted by the edge for unrouted paths and disallowed methods, before the application sees the request.
+- name: bare-status
+  media_type: none
+  applies_to: [Chatfuel Contacts API]
+  shape: empty body
+  note: >-
+    A 401 returned content-length 0 and no envelope. A chatfuel-trace-id response
+    header is present and is the only correlation handle an agent gets.
+problems:
+- status: 400
+  envelope: application-envelope
+  class: Bad Request
+  title: Missing required chatfuel_token parameter
+  observed_body: '{"result": "Bad Request: Missing required chatfuel_token parameter", "success": false, "errors": ["Bad Request: Missing required chatfuel_token parameter"], "message": null}'
+  source_probe: POST https://api.chatfuel.com/bots/{bot_id}/users/{user_id}/send
+  remediation: Supply the per-bot chatfuel_token query parameter.
+- status: 422
+  envelope: application-envelope
+  class: Bad Data
+  title: Bot not found
+  observed_body: '{"result": "Bad Data: Bot not found", "success": false, "errors": ["Bad Data: Bot not found"], "message": null}'
+  source_probe: POST https://api.chatfuel.com/bots/{bot_id}/users/{user_id}/send?chatfuel_token=...
+  remediation: >-
+    Verify the bot id in the path and that the chatfuel_token belongs to that bot.
+    Note the API returns 422 rather than 401/403/404 for an unrecognised token or
+    bot, so an agent cannot distinguish a bad token from a bad bot id.
+- status: 401
+  envelope: application-envelope
+  class: null
+  title: User not found
+  observed_body: '{"result": "User not found", "success": false, "errors": ["User not found"], "message": null}'
+  source_probe: GET https://dashboard.chatfuel.com/api/bots (no Authorization header)
+  remediation: Send an Authorization Bearer header carrying a Dashboard API Token.
+- status: 401
+  envelope: bare-status
+  title: Unauthenticated
+  observed_body: ''
+  source_probe: POST https://panel.chatfuel.com/api/contacts/{automation_id}/whatsapp/ (no Authorization header)
+  remediation: >-
+    Send an Authorization Bearer header carrying the API token from Settings → API.
+    Capture the chatfuel-trace-id response header for support.
+- status: 404
+  envelope: gateway-envelope
+  title: HTTP 404 Not Found
+  observed_body: '{"code": 404, "message": "HTTP 404 Not Found"}'
+  source_probe: GET https://api.chatfuel.com/
+- status: 405
+  envelope: gateway-envelope
+  title: HTTP 405 Method Not Allowed
+  observed_body: '{"code": 405, "message": "HTTP 405 Method Not Allowed"}'
+  source_probe: GET https://api.chatfuel.com/bots/{bot_id}/users/{user_id}/send
+  remediation: The send operation is POST only.
+gaps:
+- No published error-code reference for any Chatfuel API.
+- No stable machine-readable error code; only a prefixed human-readable string.
+- No application/problem+json on any surface.
+- No rate-limit error (429) could be provoked without valid credentials, so the documented 25 rps ceiling has no observed error shape.

@@ -1,9 +1,11 @@
-generated: '2026-07-18'
+generated: '2026-08-13'
 method: searched
 source: >-
-  https://docs.chatfuel.com/en/articles/790461-broadcasting-api and
-  https://docs.chatfuel.com/en/articles/2706667-dashboard-api — Chatfuel publishes
-  no OpenAPI, so this auth profile is captured directly from the developer docs.
+  https://help.chatfuel.com/create-contacts-in-chatfuel-via-api-23134b06ecf8800683b6efacab24b68d
+  (the only live Chatfuel API reference as of 2026-08-13), plus live 400/401/422
+  probes of https://api.chatfuel.com, https://dashboard.chatfuel.com/api and
+  https://panel.chatfuel.com/api. Chatfuel publishes no OpenAPI, so this auth
+  profile is captured from documentation and observed responses.
 provider: Chatfuel
 providerId: catnip
 summary:
@@ -14,33 +16,82 @@ summary:
   - query
   http_schemes:
   - bearer
+  oauth2_flows: []
+  openid_connect: false
+  mutual_tls: false
 schemes:
+- name: ContactsApiToken
+  type: http
+  scheme: bearer
+  description: >-
+    An account API token generated in the product at Settings → API, sent as an
+    Authorization Bearer header on Contacts API requests. The automation_id in the
+    path (taken from the automation's URL) scopes the call to one automation.
+  applies_to:
+  - Chatfuel Contacts API
+  base_url: https://panel.chatfuel.com/api
+  header: 'Authorization: Bearer {token}'
+  token_source: Settings → API (in-product)
+  docs: https://help.chatfuel.com/create-contacts-in-chatfuel-via-api-23134b06ecf8800683b6efacab24b68d
+  observed:
+    probe: POST /api/contacts/{automation_id}/whatsapp/ with no Authorization header
+    status: 401
+    body: empty
+    trace_header: chatfuel-trace-id
 - name: BroadcastingToken
   type: apiKey
   in: query
   parameter: chatfuel_token
   description: >-
     A unique token issued per bot, passed as the chatfuel_token query parameter on
-    every Broadcasting API request. Scopes the call to a single bot.
+    every Broadcasting API request. Scopes the call to a single bot. Carrying the
+    credential in the query string means it is logged by every intermediary — an
+    agent should treat the token as exposed.
   applies_to:
   - Chatfuel Broadcasting API
   base_url: https://api.chatfuel.com
-  docs: https://docs.chatfuel.com/en/articles/790461-broadcasting-api
+  docs: null
+  docs_retired: https://docs.chatfuel.com/en/articles/790461-broadcasting-api
+  docs_status: 404
+  observed:
+    probe: POST /bots/{bot_id}/users/{user_id}/send with no token
+    status: 400
+    body: '{"result":"Bad Request: Missing required chatfuel_token parameter","success":false,...}'
+    note: >-
+      With an unrecognised token the API answers 422 "Bad Data: Bot not found"
+      rather than 401/403, so a bad credential and a bad bot id are indistinguishable.
 - name: DashboardApiToken
   type: http
   scheme: bearer
   description: >-
     A Dashboard API Token generated from the account profile (profile photo →
     Dashboard API Token → generate). Sent as an Authorization Bearer header on every
-    Dashboard API request. The Dashboard API is documented as primarily for internal
-    use and subject to change.
+    Dashboard API request. The Dashboard API was documented as primarily for
+    internal use and subject to change.
   applies_to:
   - Chatfuel Dashboard API
   base_url: https://dashboard.chatfuel.com/api
   header: 'Authorization: Bearer {token}'
-  docs: https://docs.chatfuel.com/en/articles/2706667-dashboard-api
+  docs: null
+  docs_retired: https://docs.chatfuel.com/en/articles/2706667-dashboard-api
+  docs_status: 404
+  observed:
+    probe: GET /api/bots with no Authorization header
+    status: 401
+    body: '{"result":"User not found","success":false,"errors":["User not found"],"message":null}'
+scopes:
+  supported: false
+  note: >-
+    No OAuth2 or scope surface exists. Tokens are all-or-nothing at the bot,
+    automation or account level; there is no way to issue a read-only or
+    least-privilege credential, which is the sharpest auth gap for agent use.
+rotation:
+  documented: false
+  note: No token rotation, expiry or revocation policy is published for any of the three tokens.
 notes: >-
-  The JSON API plugin (https://docs.chatfuel.com/en/articles/735122-json-api) is an
-  outbound integration — the bot calls the developer's own backend — so its auth is
-  defined by the external endpoint, not by Chatfuel. No OAuth2/OIDC surface is
-  published.
+  The JSON API plugin (formerly documented at
+  https://docs.chatfuel.com/en/articles/735122-json-api, now 404) is an outbound
+  integration — the bot calls the developer's own backend — so its auth is defined
+  by the external endpoint, not by Chatfuel. No OAuth2, OIDC or mTLS surface is
+  published: /.well-known/oauth-authorization-server and
+  /.well-known/openid-configuration 404 on every real Chatfuel host.

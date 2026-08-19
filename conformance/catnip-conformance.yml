@@ -1,0 +1,85 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://chatfuel.com/gdpr, https://chatfuel.com/privacy-policy.html,
+  https://chatfuel.com/pricing (Meta / WhatsApp Business partner claims), plus live
+  probes of the Broadcasting, Dashboard and Contacts API surfaces on 2026-08-13.
+provider: Chatfuel
+providerId: catnip
+description: >-
+  Chatfuel's compliance posture is regulatory and platform-partnership, not
+  API-standards. It publishes a GDPR page and a privacy policy and states official
+  Meta Business / WhatsApp Business Solution partner status. On the wire it
+  conforms to almost no cross-cutting API standard: no OpenAPI, no OAuth2/OIDC, no
+  RFC 9457 problem details, no RFC 9116 security.txt of its own, no RFC 8594 sunset
+  headers, no documented pagination or idempotency contract. Only HTTP bearer
+  authentication (RFC 6750 shape) and TLS/HSTS are actually in place.
+standards:
+- id: openapi
+  conforms: false
+  evidence: >-
+    /openapi.json, /openapi.yaml, /swagger.json, /api-docs, /docs and /redoc probed
+    on api.chatfuel.com, dashboard.chatfuel.com, panel.chatfuel.com, chatfuel.com,
+    docs.chatfuel.com, academy.chatfuel.com and docs.chatfuel.ai — all 404 or an
+    HTML shell.
+- id: oauth2
+  conforms: false
+  evidence: No oauth2 surface; /.well-known/oauth-authorization-server 404s on every real host.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration 404s on every real host.
+- id: rfc6750-bearer
+  conforms: true
+  evidence: >-
+    Dashboard API and Contacts API both take Authorization: Bearer {token}; a
+    missing header returns 401 (observed).
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: >-
+    Errors return application/json vendor envelopes ({result,success,errors,message}
+    and {code,message}), never application/problem+json. See errors/catnip-problem-types.yml.
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: >-
+    No Chatfuel-authored /.well-known/security.txt. The only 200 belongs to Intercom
+    on the retired docs host. See well-known/catnip-well-known.yml.
+- id: rfc9727-api-catalog
+  conforms: false
+  evidence: academy.chatfuel.com serves /.well-known/api-catalog with an empty linkset; every other host 404s.
+- id: rfc8594-sunset-header
+  conforms: false
+  evidence: No Sunset or Deprecation headers observed; no deprecation policy published.
+- id: mcp
+  conforms: true
+  evidence: >-
+    Remote MCP server at https://academy.chatfuel.com/_mcp/server answers tools/list
+    with JSON-RPC 2.0 over text/event-stream (HTTP 200, anonymous). Documentation
+    scope only. See mcp/catnip-mcp.yml.
+- id: a2a
+  conforms: false
+  evidence: /.well-known/agent-card.json and /.well-known/agent.json 404 on every non-SPA host.
+- id: asyncapi
+  conforms: false
+  evidence: No event, streaming or webhook surface is published for any Chatfuel API.
+- id: gdpr
+  conforms: true
+  evidence: https://chatfuel.com/gdpr (200) plus https://chatfuel.com/privacy-policy.html (200).
+- id: tls-hsts
+  conforms: true
+  evidence: >-
+    TLS 1.3 on every host. Strict-Transport-Security: max-age=31536000;
+    includeSubDomains was returned on live API responses from api.chatfuel.com and
+    panel.chatfuel.com and on chatfuel.com. Note the deterministic probe in
+    security/catnip-domain-security.yml records hsts null for api.chatfuel.com and
+    docs.chatfuel.com because it reads the header from a HEAD of the host root,
+    which those hosts answer without it; the header is present on real API responses.
+certifications_published: []
+certification_note: >-
+  No SOC 2, ISO 27001, PCI DSS, HIPAA or FedRAMP claim was found; trust.chatfuel.com
+  does not resolve and no trust centre page exists. The published compliance surface
+  is GDPR plus the Meta/WhatsApp Business partner status on the pricing page.
+platform_partnerships:
+- name: Meta Business Partner
+  claimed_at: https://chatfuel.com/pricing
+- name: WhatsApp Business Solution Provider
+  claimed_at: https://chatfuel.com/pricing

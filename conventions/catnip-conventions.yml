@@ -1,48 +1,108 @@
-generated: '2026-07-18'
+generated: '2026-08-13'
 method: searched
 source: >-
-  https://docs.chatfuel.com/en/collections/168839-api — cross-cutting request and
-  response conventions captured from the Broadcasting, Dashboard, and JSON API
-  plugin documentation. Chatfuel publishes no OpenAPI.
+  https://help.chatfuel.com/create-contacts-in-chatfuel-via-api-23134b06ecf8800683b6efacab24b68d
+  plus live header and error probes of https://api.chatfuel.com,
+  https://dashboard.chatfuel.com/api and https://panel.chatfuel.com/api on
+  2026-08-13. Chatfuel publishes no OpenAPI and, since the retirement of
+  docs.chatfuel.com, no cross-cutting API conventions page.
 provider: Chatfuel
 providerId: catnip
 description: >-
   How the Chatfuel developer surfaces behave across operations: authentication
-  style per API, response envelope, messaging conventions, and rate-limit
-  signaling. Chatfuel does not document an idempotency-key mechanism, cursor
-  pagination, or field expansion.
+  style per API, response and error envelopes, tracing and version headers,
+  messaging conventions, and rate-limit signalling. Chatfuel documents no
+  idempotency mechanism, no pagination convention, no field expansion and no
+  API versioning scheme. The three API surfaces do not share one contract — they
+  differ in credential placement, error envelope and even whether an error carries
+  a body at all.
 api_style: REST over HTTPS; query-parameter and JSON bodies; JSON responses.
+surface_consistency:
+  consistent: false
+  note: >-
+    Three surfaces, three conventions: Broadcasting takes its credential in the
+    query string and returns a vendor envelope; Dashboard takes a Bearer header and
+    returns the same envelope; Contacts takes a Bearer header and returns an empty
+    body with a trace header. An agent must special-case each.
 authentication:
+  contacts: HTTP Bearer Authorization header (account API token from Settings → API)
   broadcasting: apiKey via chatfuel_token query parameter (per-bot token)
   dashboard: HTTP Bearer Authorization header (Dashboard API Token)
   detail: authentication/catnip-authentication.yml
 response_envelope:
-  api: Chatfuel Dashboard API
+  api: Chatfuel Broadcasting API, Chatfuel Dashboard API
   shape: '{"success": true, "result": {...}}'
-  detail: >-
-    Successful Dashboard API responses wrap payloads in a success boolean and a
-    result object (e.g. bot ids or invite tokens).
+  error_shape: '{"result": "<class>: <message>", "success": false, "errors": [...], "message": null}'
+  detail: errors/catnip-problem-types.yml
+  note: >-
+    The Contacts API on panel.chatfuel.com does not use this envelope — a 401 was
+    observed with content-length 0 and no body at all.
+request_tracing:
+  header: chatfuel-trace-id
+  surface: Chatfuel Contacts API (panel.chatfuel.com)
+  observed_on: 401 response, 2026-08-13
+  documented: false
+  note: >-
+    Returned on responses but never named in the documentation; it is the only
+    correlation handle a caller gets on that surface.
+versioning:
+  scheme: none-published
+  header: X-Chatfuel-Version
+  surface: Chatfuel Broadcasting API (api.chatfuel.com)
+  observed_example: master-33552
+  exposed_via_cors: true
+  note: >-
+    Advertised in Access-Control-Expose-Headers, so browser clients can read it. It
+    is a build train identifier, not a pinnable API version.
+  detail: lifecycle/catnip-lifecycle.yml
+cors:
+  access_control_allow_origin: '*'
+  access_control_allow_credentials: true
+  access_control_expose_headers: X-Chatfuel-Version
+  surface: Chatfuel Broadcasting API
 messaging_conventions:
   send_target: One of chatfuel_flow_name, chatfuel_block_name, or chatfuel_block_id is required.
   message_tag: >-
     chatfuel_message_tag allows sending messages outside the platform 24-hour
     messaging window.
   user_attributes: Arbitrary user attributes may be passed as key-value pairs; tags as a comma-separated list.
-  docs: https://docs.chatfuel.com/en/articles/790461-broadcasting-api
+  docs_retired: https://docs.chatfuel.com/en/articles/790461-broadcasting-api
+  docs_status: 404
+contacts_conventions:
+  path: POST /api/contacts/{automation_id}/whatsapp/
+  path_scope: automation_id is read from the automation's URL in the product
+  batch: phones[] accepts up to 1,000 E.164 numbers per request
+  bulk_properties: contact_data.properties applies the same custom attributes to every contact in the request
+  docs: https://help.chatfuel.com/create-contacts-in-chatfuel-via-api-23134b06ecf8800683b6efacab24b68d
 json_api_plugin:
+  status: documentation retired
   methods: [GET, POST, PUT, PATCH, DELETE]
   input_modes: [URL fields, full JSON profile, custom JSON body, URL-encoded]
   response: >-
     Return a messages array; combine several message dictionaries in one answer, or
     return an empty response to render nothing. Attribute mapping via JSONPath.
   timeout_seconds: 10
-  docs: https://docs.chatfuel.com/en/articles/735122-json-api
+  docs_retired: https://docs.chatfuel.com/en/articles/735122-json-api
+  docs_status: 404
 idempotency:
   supported: false
-  note: Chatfuel documents no idempotency-key header or mechanism.
+  note: >-
+    No idempotency-key header, parameter or mechanism is documented on any surface,
+    and none was observed. This matters most on the Contacts API, where a retried
+    1,000-number batch has no published dedupe contract, and on Broadcasting, where
+    a retry can re-send a message to a real end user.
 pagination:
   supported: false
-  note: No cursor/offset pagination convention is documented.
+  note: No cursor/offset pagination convention is documented or observed.
+field_expansion:
+  supported: false
+metadata:
+  supported: true
+  note: contact_data.properties on the Contacts API sets arbitrary key/value attributes; Broadcasting sets user attributes the same way.
 rate_limiting:
   broadcasting_rps_per_bot: 25
+  headers_observed: none
+  note: >-
+    No X-RateLimit-* or RateLimit-* headers were present on any observed response,
+    so the 25 rps ceiling is a documented number with no runtime signal behind it.
   detail: rate-limits/catnip-rate-limits.yml

@@ -1,19 +1,41 @@
 specification: API Commons Rate Limits
 specificationVersion: '0.1'
-generated: '2026-07-18'
+generated: '2026-08-13'
 method: searched
-source: https://docs.chatfuel.com/en/articles/790461-broadcasting-api
+source: >-
+  https://help.chatfuel.com/create-contacts-in-chatfuel-via-api-23134b06ecf8800683b6efacab24b68d
+  for the Contacts API batch cap; the 25 rps Broadcasting ceiling and the 10 second
+  JSON API plugin timeout were published at docs.chatfuel.com, which was retired and
+  now returns 404. Response headers were read from live probes on 2026-08-13.
 provider: Chatfuel
 providerId: catnip
 created: '2026-07-18'
-modified: '2026-07-18'
+modified: '2026-08-13'
 tags:
 - Rate Limiting
 - Messaging
 description: >-
-  Chatfuel publishes a rate limit for the Broadcasting API of 25 requests per
-  second per bot. The JSON API plugin enforces a maximum response timeout of 10
-  seconds. No numeric limits are published for the Dashboard API.
+  Chatfuel publishes a rate limit for the Broadcasting API of 25 requests per second
+  per bot, and a hard batch cap of 1,000 phone numbers per Contacts API request. No
+  numeric limits are published for the Dashboard API. Critically, NO rate-limit
+  response headers are emitted on any surface — no X-RateLimit-*, no RateLimit-*, no
+  Retry-After were present on any observed response — so a client has no runtime
+  signal and must self-throttle against a number it read in prose. The page that
+  published that number is itself now a 404.
+limit_count: 2
+headers_published: false
+observed_headers:
+  x_ratelimit: absent
+  ratelimit_draft: absent
+  retry_after: absent
+  probed: '2026-08-13'
+  probed_surfaces:
+  - POST https://api.chatfuel.com/bots/{bot_id}/users/{user_id}/send (400, 422)
+  - GET https://dashboard.chatfuel.com/api/bots (401)
+  - POST https://panel.chatfuel.com/api/contacts/{automation_id}/whatsapp/ (401)
+  note: >-
+    A 429 could not be provoked without valid credentials, so the exhaustion status
+    code and body shape for Chatfuel are unverified.
 limits:
 - name: Broadcasting API requests
   api: Chatfuel Broadcasting API
@@ -21,11 +43,37 @@ limits:
   metric: requests_per_second
   limit: 25
   timeFrame: second
-  source: https://docs.chatfuel.com/en/articles/790461-broadcasting-api
+  headers: none
+  source_retired: https://docs.chatfuel.com/en/articles/790461-broadcasting-api
+  source_status: 404
+  note: >-
+    Captured while the developer help centre was live; the documenting page has
+    since been removed with no replacement, so this ceiling is no longer publicly
+    verifiable.
+- name: Contacts API phone numbers per request
+  api: Chatfuel Contacts API
+  scope: request
+  metric: items_per_request
+  limit: 1000
+  timeFrame: request
+  headers: none
+  source: https://help.chatfuel.com/create-contacts-in-chatfuel-via-api-23134b06ecf8800683b6efacab24b68d
+  note: >-
+    "List of phone numbers with country codes. Maximum 1,000 numbers per request."
+    No accompanying request-rate limit is published for this surface.
 constraints:
 - name: JSON API plugin response timeout
   api: Chatfuel JSON API plugin
   metric: seconds
   limit: 10
   note: The maximum timeout for a JSON API plugin backend response is always 10 seconds.
-  source: https://docs.chatfuel.com/en/articles/735122-json-api
+  source_retired: https://docs.chatfuel.com/en/articles/735122-json-api
+  source_status: 404
+- name: Meta 24-hour messaging window
+  api: Chatfuel Broadcasting API
+  metric: platform_policy
+  note: >-
+    Messages outside the platform's 24-hour window require a chatfuel_message_tag.
+    This is a Meta platform constraint enforced through Chatfuel, not a Chatfuel
+    quota.
+  source: https://academy.chatfuel.com/24-hour-rule
